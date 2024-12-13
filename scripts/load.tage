@@ -1,0 +1,18 @@
+:load
+load menu.tage
+load outside.tage
+load room_1.tage
+
+
+#Sets variables
+set red_sqaure "&backcolor&9m  &reset_color&"
+set blue_sqaure "&backcolor&12m  &reset_color&"
+set purple_sqaure "&backcolor&5m  &reset_color&"
+set yellow_sqaure "&backcolor&11m  &reset_color&"
+set rock 0
+set note 0
+set room_1_inspect 0
+set room_2_inspect 1
+set room_2_enter 0
+set text_speed 1
+return

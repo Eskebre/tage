@@ -1,0 +1,6 @@
+print "&backcolor&1m  &backcolor&2m  &backcolor&3m  &backcolor&4m  &backcolor&5m  &backcolor&6m  &ansi&0m" 0 1
+print "If you dont see color, please install colorama from pip. 'python -m pip install colorama'" 0 1
+
+load load.tage
+open load.tage call load
+open menu.tage

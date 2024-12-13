@@ -1,0 +1,48 @@
+:enter
+print "You enter the building and find yourself in an reception room" &text_speed& 1
+
+:option
+wait 1000
+print "\n" 0 0
+print "inspect ) Inspect the room" 0 1
+print "outside ) Go inside the building" 0 1
+if &room_1_inspect& = 1 print "note ) Read the note on the desk" 0 1
+if &room_1_inspect& = 1 print "door ) Open the door to employee room" 0 1
+print "Select an option:" 0 1
+print "\n" 0 0
+clear option
+option inspect call inspect
+option outside call outside
+option note call note
+option door call door
+choice
+goto option
+
+
+:inspect
+print "In the room you can see a door leading to employee room and a note on the desk" &text_speed& 1
+set room_1_inspect 1
+return
+
+
+:door
+if &key& = 1 goto open_door
+print "You try and open the door but it seems its locked and requires a key" &text_speed& 1
+return
+
+
+:open_door
+open room_2.tage goto enter
+return
+
+
+:note
+print "You read the note" &text_speed& 1
+print "&"&The key to the employee room door is under a rock outside incase someone forgets the key again&"&" &text_speed& 1
+print "&blue_sqaure& &blue_sqaure& &blue_sqaure& &blue_sqaure&" &text_speed& 1
+print "4 Blue squares" &text_speed& 1
+set rock 1
+return
+
+:outside
+open outside.tage goto enter

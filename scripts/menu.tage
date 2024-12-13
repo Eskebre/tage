@@ -1,0 +1,15 @@
+print "Choose an option"
+print "1 ) Play Game" 0 1
+print "2 ) Exit" 0 1
+clear option
+option 1 goto play
+option 2 goto end
+choice
+
+
+
+:play
+print "Enter player name: " 0 0
+input name
+open outside.tage call first
+:end

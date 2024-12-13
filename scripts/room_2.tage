@@ -1,0 +1,22 @@
+:enter
+print "You walk into the employee room" &text_speed& 0
+if &room_2_enter& = 0 print " and you immendiently see a large vault door" &text_speed& 0
+print "." &text_speed& 1
+set room_2_enter 1
+
+:option
+wait 1000
+print "\n" 0 0
+print "inspect ) Inspect the room" 0 1
+print "door ) Go back to enterance room" 0 1
+if &room_2_inspect& = 1 print "keypad ) Read the note on the desk" 0 1
+if &room_2_inspect& = 1 print "door ) Open the door to employee room" 0 1
+print "Select an option:" 0 1
+print "\n" 0 0
+clear option
+option inspect call inspect
+option outside call outside
+option note call note
+option door call door
+choice
+goto option

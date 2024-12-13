@@ -1,0 +1,44 @@
+:start
+print "Enter first number: " 0 0
+input num1
+print "Enter second number: " 0 0
+input num2
+
+print "Enter operator to perform on numbers ( + - x / ^ ): " 0 0
+clear option
+option + call plus
+option - call minus
+option x call multi
+option / call div
+option ^ call pow
+choice
+
+print "&answer&" 0 1
+
+print "Calculate another number (y/N)"
+clear option
+option y goto start
+option * goto end
+choice
+
+:plus
+set answer &num1&+&num2&
+return
+
+:minus
+set answer &num1&-&num2&
+return
+
+:div
+set answer &num1&/&num2&
+return
+
+:multi
+set answer &num1&*&num2&
+return
+
+:pow
+set answer &num1&^&num2&
+return
+
+:end

@@ -1,0 +1,44 @@
+#On first run
+:first
+print "You've heard rumors of an old abandoned office building in the middle of nowhere with a vault which containts&color&11m untold riches&reset_color&." &text_speed& 1
+print "You decide to investiage the building to find these&color&11m valuables&reset_color&." &text_speed& 1
+
+
+:enter
+print "You are now standing on the outside of the building." &text_speed& 1
+:option
+wait 1000
+print "\n" 0 0
+print "inspect ) Inspect the outside of the building" 0 1
+print "inside ) Go inside the building" 0 1
+if &rock& = 1 print "rock ) Look under the rock" 0 1
+print "Select an option:" 0 1
+print "\n" 0 0
+clear option
+option inspect call inspect
+option inside call inside
+option rock call rock
+choice
+goto option
+
+
+:inspect
+print "\n" 0 0
+print "You look at the building and notice a set of colors of the building wall." &text_speed& 1
+print "&red_sqaure& &red_sqaure& &purple_sqaure& &purple_sqaure& &purple_sqaure&" &text_speed& 1
+print "Two red and 3 purple squares." &text_speed& 1
+return
+
+:inside
+open room_1.tage goto enter
+return
+
+:rock
+if &key& = 1 goto rock_no_key
+print "You look under the rock and find a key" &text_speed& 1
+set key 1
+return
+
+:rock_no_key
+print "You look under the rock to find there is not key since you already took the key" &text_speed& 1
+return
