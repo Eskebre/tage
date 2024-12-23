@@ -4,7 +4,7 @@ try:
     from colorama import just_fix_windows_console
     just_fix_windows_console()
 except:
-    print("In the case colored text or ansi codes don't work properly, install the colorama python module. \'python -m pip install colorama\'")
+    pass
 
 tage = Tage()
 
