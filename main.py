@@ -8,8 +8,8 @@ except:
 
 tage = Tage()
 
-tage.scriptLoad("init.tage")
-tage.scriptOpen("init.tage")
+tage.scriptLoad(tage, "init.tage")
+tage.executeCommand(f'open init.tage')
 
 while tage.step():
     #print(tage.stack)

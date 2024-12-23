@@ -1,5 +1,6 @@
 from time import sleep
-
+from importlib import util
+from plugins import Plugin
 
 class Tage:
 
@@ -28,24 +29,30 @@ class Tage:
         self.assets_folder = "assets/"
         self.data_folder = "data/"
         self.command_map = {  # Maps commands to functions
-            "print": self.printMessage,
-            "pause": self.pause,
-            "goto": self.goto,
-            "call": self.call,
-            "return": self.returnToStack,
-            "option": self.option,
-            "choice": self.choice,
-            "clear": self.clearList,
-            "set": self.setVariable,
-            "input": self.user_input,
-            "if": self.ifStatement,
-            "wait": self.wait,
             "load": self.scriptLoad,
             "unload": self.scriptUnload,
-            "open": self.scriptOpen,
-            "write": self.writeToFile
         }
+        self.load_plugins('builtin/')
+        self.load_plugins()
     
+    plugins = Plugin()
+
+
+    def load_plugins(self, folder='plugins/'):
+        self.plugins.load_plugins(folder)
+        
+        for i in self.plugins.get_plugins():
+            try:
+                name, command = i.get_command()
+                self.command_map[name] = command
+                try:
+                    i.load()
+                except:
+                    pass
+            except:
+                pass
+
+    @staticmethod            
     def scriptLoad(self, script_location:str, *args) -> None:
         """Loads and cleans script file to scripts dictonary"""
         with open(self.script_folder+script_location) as f:
@@ -56,26 +63,17 @@ class Tage:
             if not (i.strip().startswith("#") or i.strip() == ""):
                 self.scripts[script_location].append(i)
         self.findLabels(script_location)
-
+    @staticmethod
     def scriptUnload(self, script_location, *args) -> None:
         """Removes script from scripts dictonary"""
         try:
             self.scripts.pop(script_location)
         except KeyError:
             pass
-
-    def scriptOpen(self, script_location, *args):
-        """Changes script pointer to start of specified script. Accepts commands at the end of the argument"""
-        self.pointer = 0
-        self.script_pointer = script_location
-        if len(args) != 0:
-            self.executeCommand('\"'+'" "'.join(args)+'\"')
+    
         
 
-    def writeToFile(self,file_name,data,write_mode="a", *args):
-        """Writes a line of data to a file, supports changeing write mode"""
-        with open(self.data_folder+file_name,write_mode) as f:
-            f.write(data)
+    
 
     def findLabels(self, script_location):
         """Finds all labels within a script and stores it to labels list"""
@@ -84,95 +82,6 @@ class Tage:
                 self.labels.setdefault(script_location, {}) #Creates a dictionary key if not exists
                 self.labels[script_location][command.strip(" :\n").lower()] = i
 
-    def pause(self, *args) -> None:
-        """Waits for user to return"""
-        input()
-
-    def wait(self, time, *args) -> None:
-        """Waits the specified time in miliseconds"""
-        sleep(int(time)/1000)
-
-    def user_input(self, name, *args) -> None:
-        """Gets user input and puts it into a variable"""
-        self.variables[name] = input().replace("\"", "&quote&")
-
-    def goto(self, label: str, *args) -> None:
-        """Sets pointer to label position"""
-        self.pointer = self.labels[self.script_pointer][label.lower().strip()]
-
-    def call(self, label: str, *args) -> None:
-        """Saves pointer position to stack then goes to label position"""
-        self.stack.append([self.current_script_pointer, self.current_pointer])
-        self.goto(label)
-
-    def returnToStack(self) -> None:
-        """Sets pointer to the top of the pointer stack and removes the stack item. Ignored it nothing is on the stack"""
-        if len(self.stack) == 0:
-            return
-        self.script_pointer = self.stack[-1][0]
-        self.pointer = self.stack[-1][1]
-        self.stack.pop()
-
-    def ifStatement(self, value1, op, value2, *args) -> None:
-        """Executes a command if operation is true"""
-        if self.comparativeOperation(value1, op, value2):
-            self.executeCommand('\"'+'" "'.join(args)+'\"')
-        return
-
-    def option(self, selector: str, *args) -> None:
-        """Adds the selector and command to options list"""
-        #The string concatination stuff is to encase each argument with quation marks for later
-        self.option_list[selector] = '"' + '" "'.join(args) + '"'
-
-    def choice(self, case_sensitive=0, *args) -> None:
-        """Allows user input to select an option and run the coresponding command.
-           If require option is 1 it will repeat user input until a correct option is selected"""
-        while True:
-            user_input = input()
-            for i in self.option_list.keys():
-                if int(case_sensitive) and user_input == i:
-                    self.executeCommand(self.option_list[i])
-                    return
-                elif not int(case_sensitive) and user_input.lower() == i.lower():
-                    self.executeCommand(self.option_list[i])
-                    return
-                #If option has this value, it will always run when iterated over. Note this option should be put at the bottom of the list
-                elif i == "*":              
-                    self.executeCommand(self.option_list[i])
-                    return
-
-    def clearList(self, list_to_clear, *args) -> None:
-        """Clears specified list/dict"""
-        if list_to_clear == "option":
-            self.option_list.clear()
-        elif list_to_clear == "stack":
-            self.stack.clear()
-
-    def setVariable(self, name, *args):
-        """Puts the variable into the variables dict"""
-        self.variables[name] = self.variableOperation("".join(args))
-
-    def printMessage(self, message: str, delay: float = 0, new_line=True, *args) -> None:
-        """Wrapper for the print function, Delay specifies the amount of time between each character being printed"""
-        escape_code_chars = "\003\x1b[;0123456789:]"
-        message = message.encode("utf_8", 'ignore').decode('unicode_escape')
-        int(new_line)
-        escape_code = False
-        if delay == 0:                  #If no delay, print message as normal
-            print(message, end="")
-            return
-        for i in message:               #Prints message on delay
-            print(i, end="", flush=True)
-
-            if i == "\003" or i == "\x1b":             #Used to ignore ansi escape codes for delay
-                escape_code = True
-            if escape_code:
-                if i not in escape_code_chars:
-                    escape_code = False
-            else:
-                sleep(int(delay)/1000)
-        if int(new_line):               #Wether to print a new line
-            print("")
 
     def step(self) -> bool:
         """Handle a single iteration"""
@@ -212,7 +121,7 @@ class Tage:
         if command.strip().startswith(':'):
             return
         arguments = self.splitArguments(self.variableParser(command))
-        self.command_map[arguments[0]](*arguments[1:])                  #Runs function from command map
+        self.command_map[arguments[0]](self,*arguments[1:])                  #Runs function from command map
 
     def splitArguments(self, command: str) -> list[str]:
         """Splits command into list of arguments"""
