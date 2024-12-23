@@ -86,13 +86,14 @@ class Tage:
     def step(self) -> bool:
         """Handle a single iteration"""
 
-        #Stores the current pointer location to prevent issues when going across files
+        # Stores the current pointer location to prevent issues when going across files
         self.current_pointer = self.pointer
         self.current_script_pointer = self.script_pointer
         try:
-            #Gets the command from the script to be executed
-            self.executeCommand(self.scripts[self.script_pointer][self.pointer])
-            # Exception handling
+            # Gets the command from the script to be executed
+            self.executeCommand(
+                self.scripts[self.script_pointer][self.pointer])
+        # Exception handling
         except TageOpenString:
             print(
                 f"\nERROR: Unclosed string in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'")
@@ -121,7 +122,8 @@ class Tage:
         if command.strip().startswith(':'):
             return
         arguments = self.splitArguments(self.variableParser(command))
-        self.command_map[arguments[0]](self,*arguments[1:])                  #Runs function from command map
+        # Runs function from dict key
+        self.command_map[arguments[0]](*arguments[1:])                  #Runs function from command map
 
     def splitArguments(self, command: str) -> list[str]:
         """Splits command into list of arguments"""
@@ -135,7 +137,9 @@ class Tage:
             raise TageOpenString
 
         # Splits string from quotation marks then splits on space outside of quotation marks
-        string_split: str = command.split("\"")
+        # Its expected that every other item in the list is a string
+        # Adds in addition quotes aswell from not a string
+        string_split: list[str] = command.split("\"")
         for i in range(len(string_split)):
             if i % 2 == 0:
                 output += string_split[i].strip().replace("&quote&","\"").split(" ")
@@ -150,7 +154,7 @@ class Tage:
 
     def variableParser(self, command: str) -> str:
         """Inserts variables into commands"""
-        #Checks if the rest of the function should be run or something is not as expected
+        # Checks if the rest of the function should be run or something is not as expected
         if command.count("&") == 0:
             return command
         elif command.count("&") % 2 == 1:
@@ -165,38 +169,36 @@ class Tage:
             else:
                 if string_split[i] in self.variables:
                     output += self.variables[string_split[i]]
-        return output.encode("utf_8", 'ignore').decode('unicode_escape') #The encoding and decoding is to allow escape codes to work
+        # The encoding and decoding is to allow escape codes to work
+        return output.encode("utf_8", 'ignore').decode('unicode_escape')
 
-    
-    def variableOperation(self, input:str, *args) -> str:
+    def variableOperation(self, command: str, *args) -> str:
         """Takes a string input and performs basic mathmatical operations if it only contains numbers and operators"""
         # List of mathmatical operators
-        operator_list = "+-*/^" 
-        pre_split_string = input.replace(",", "").replace(" ", "")
-        
+        operator_list = "+-*/^"
+        pre_split_string = command.replace(",", "").replace(" ", "")
+
         for i in operator_list:
             if i != "-":
                 pre_split_string = pre_split_string.replace(i, f",{i},")
             else:
                 # Replace minus with an addition and set next number negative
-                pre_split_string = pre_split_string.replace(i, f",+,-") 
+                pre_split_string = pre_split_string.replace(i, ",+,-")
         tokens = pre_split_string.split(",")
-        
-        #Check if any not related characters are in the string
+
+        # Check if any not related characters are in the string
         for i in tokens:
             if not str(i) in operator_list and not self.isDigit(i):
-                return input
-        
-        
+                return command
         output = 0
-        operator = "+" 
+        operator = "+"
         for i in tokens:
-            #Replace empty strings with zero
+            # Replace empty strings with zero
             num = 0 if i == "" else i
             if str(i) in operator_list:
                 operator = i
                 continue
-            #The place where the math stuff happens
+            # The place where the math stuff happens
             num = int(num)
             if operator == "+":
                 output += num
@@ -205,24 +207,24 @@ class Tage:
             elif operator == "/":
                 output /= num
             elif operator == "^":
-                output = pow(output,num)
+                output = pow(output, num)
         return str(output)
 
     def comparativeOperation(self, value1, op, value2, *args) -> bool:
         """Checks if values are equal based on an operator. Less and greater than only work on numbers."""
-        operator_list = ["=","==","!=","<",">","<=",">="]
+        operator_list = ["=", "==", "!=", "<", ">", "<=", ">="]
         if op not in operator_list:
             raise TageInvalidOperator
-        
-        #Numeric and string comparisons
+
+        # Numeric and string comparisons
         if "!" in op:
             if value1 != value2:
                 return True
         elif "=" in op:
             if value1 == value2:
                 return True
-        
-        #Numeric comparisons
+
+        # Numeric comparisons
         if self.isDigit(value1) and self.isDigit(value2):
             if "<" in op:
                 if value1 < value2:
@@ -231,30 +233,25 @@ class Tage:
                 if value1 > value2:
                     return True
         return False
-        
-        
-    
 
     @staticmethod
-    def isDigit(input):
+    def isDigit(num):
         """Checks if the input can be converted to an int"""
         try:
-            int(input)
+            int(num)
         except ValueError:
             return False
         else:
             return True
-        
+
 
 class TageOpenString(Exception):
     """Thrown in the condition of a string having no closing quotation marks"""
-    pass
 
 
 class TageOpenVariable(Exception):
     """Thrown in the condition of a variable having no closing andpersand"""
-    pass
+
 
 class TageInvalidOperator(Exception):
     """Thrown in the case of a operator is not valid"""
-    pass
