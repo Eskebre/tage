@@ -1,4 +1,4 @@
-from tage import Tage
+from tage.tage import Tage
 
 try:
     from colorama import just_fix_windows_console

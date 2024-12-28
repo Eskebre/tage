@@ -1,11 +1,11 @@
-def load():
-    pass
+def load(tage):
+    return True
 
 name = "goto"
 
-def goto(self, label: str, *args) -> None:
+def goto(tage, label: str, *args) -> None:
         """Sets pointer to label position"""
-        self.pointer = self.labels[self.script_pointer][label.lower().strip()]
+        tage.pointer = tage.labels[tage.script_pointer][label.lower().strip()]
 
 def get_command():
     return name, goto

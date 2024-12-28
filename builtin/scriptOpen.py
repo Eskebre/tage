@@ -1,14 +1,14 @@
-def load():
-    pass
+def load(tage):
+    return True
 
 name = "open"
 
-def scriptOpen(self, script_location, *args):
+def scriptOpen(tage, script_location, *args):
         """Changes script pointer to start of specified script. Accepts commands at the end of the argument"""
-        self.pointer = 0
-        self.script_pointer = script_location
+        tage.pointer = 0
+        tage.script_pointer = script_location
         if len(args) != 0:
-            self.executeCommand('\"'+'" "'.join(args)+'\"')
+            tage.executeCommand('\"'+'" "'.join(args)+'\"')
 
 def get_command():
     return name, scriptOpen

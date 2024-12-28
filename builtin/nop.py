@@ -1,9 +1,9 @@
-def load():
-    pass
+def load(tage):
+    return True
 
 name = "nop"
 
-def nop(self, *args) -> None:
+def nop(tage, *args) -> None:
         """No operation"""
         return
 

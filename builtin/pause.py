@@ -1,5 +1,5 @@
-def load():
-    pass
+def load(tage):
+    return True
 
 name = "pause"
 

@@ -1,6 +1,6 @@
 from time import sleep
 from importlib import util
-from plugins import Plugin
+from .plugins import Plugin
 
 class Tage:
 
@@ -43,14 +43,15 @@ class Tage:
         
         for i in self.plugins.get_plugins():
             try:
-                name, command = i.get_command()
-                self.command_map[name] = command
-                try:
-                    i.load()
-                except:
-                    pass
+                if i.load(self):
+                    try:
+                        name, command = i.get_command()
+                        self.command_map[name] = command
+                    except:
+                        pass
             except:
                 pass
+            
 
     @staticmethod            
     def scriptLoad(self, script_location:str, *args) -> None:
@@ -123,7 +124,7 @@ class Tage:
             return
         arguments = self.splitArguments(self.variableParser(command))
         # Runs function from dict key
-        self.command_map[arguments[0]](*arguments[1:])                  #Runs function from command map
+        self.command_map[arguments[0]](self, *arguments[1:])                  #Runs function from command map
 
     def splitArguments(self, command: str) -> list[str]:
         """Splits command into list of arguments"""
