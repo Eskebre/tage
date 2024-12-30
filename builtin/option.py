@@ -9,4 +9,4 @@ def option(tage, selector: str, *args) -> None:
     tage.option_list[selector] = '"' + '" "'.join(args) + '"'
 
 def get_command():
-    return name, option
+    return {name: option}

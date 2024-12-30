@@ -8,4 +8,4 @@ def setVariable(tage, name, *args):
     tage.variables[name] = tage.variableOperation("".join(args))
     
 def get_command():
-    return name, setVariable
+    return {name: setVariable}

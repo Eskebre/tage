@@ -8,4 +8,4 @@ def goto(tage, label: str, *args) -> None:
         tage.pointer = tage.labels[tage.script_pointer][label.lower().strip()]
 
 def get_command():
-    return name, goto
+    return {name: goto}

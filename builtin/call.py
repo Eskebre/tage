@@ -9,4 +9,4 @@ def call(tage, label: str, *args) -> None:
         tage.executeCommand(f'goto {label}')
 
 def get_command():
-    return name, call
+    return {name: call}

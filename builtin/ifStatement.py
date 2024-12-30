@@ -11,4 +11,4 @@ def ifStatement(tage, value1, op, value2, *args) -> None:
     return
 
 def get_command():
-    return name, ifStatement
+    return {name: ifStatement}

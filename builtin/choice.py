@@ -24,4 +24,4 @@ def choice(tage, case_sensitive=0, *args) -> None:
                 return
                 
 def get_command():
-    return name, choice
+    return {name: choice}

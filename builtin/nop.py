@@ -8,4 +8,4 @@ def nop(tage, *args) -> None:
         return
 
 def get_command():
-    return name, nop
+    return {name: nop}

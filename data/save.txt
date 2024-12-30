@@ -1,3 +1,0 @@
-:start
-print "hello world" 0 1
-return

@@ -11,4 +11,4 @@ def clearList(tage, list_to_clear, *args) -> None:
         tage.stack.clear()
 
 def get_command():
-    return name, clearList
+    return {name: clearList}

@@ -10,4 +10,4 @@ def wait(tage, time, *args) -> None:
         sleep(int(time)/1000)
 
 def get_command():
-    return name, wait
+    return {name: wait}

@@ -45,8 +45,8 @@ class Tage:
             try:
                 if i.load(self):
                     try:
-                        name, command = i.get_command()
-                        self.command_map[name] = command
+                        command = i.get_command()
+                        self.command_map.update(command)
                     except:
                         pass
             except:

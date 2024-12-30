@@ -8,4 +8,4 @@ def user_input(tage, name, *args) -> None:
         tage.variables[name] = input().replace("\"", "&quote&").strip()
 
 def get_command():
-    return name, user_input
+    return {name: user_input}

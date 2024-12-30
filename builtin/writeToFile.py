@@ -9,4 +9,4 @@ def writeToFile(tage,file_name,data,write_mode="a", *args):
             f.write(data)
 
 def get_command():
-    return name, writeToFile
+    return {name: writeToFile}

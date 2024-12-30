@@ -13,4 +13,4 @@ def returnToStack(tage) -> None:
         tage.stack.pop()
 
 def get_command():
-    return name, returnToStack
+    return {name: returnToStack}

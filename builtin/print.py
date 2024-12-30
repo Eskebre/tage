@@ -30,4 +30,4 @@ def printMessage(tage, message: str, delay: int = 0, new_line=1, *args) -> None:
         print("")
 
 def get_command():
-    return name, printMessage
+    return {name: printMessage}

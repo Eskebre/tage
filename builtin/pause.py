@@ -8,4 +8,4 @@ def pause(*args):
     input()
 
 def get_command():
-    return name, pause
+    return {name: pause}

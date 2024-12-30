@@ -11,4 +11,4 @@ def scriptOpen(tage, script_location, *args):
             tage.executeCommand('\"'+'" "'.join(args)+'\"')
 
 def get_command():
-    return name, scriptOpen
+    return {name: scriptOpen}
