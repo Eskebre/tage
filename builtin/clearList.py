@@ -3,7 +3,7 @@ def load(tage):
 
 name = "clear"
 
-def clearList(tage, list_to_clear, *args) -> None:
+def clearList(tage, list_to_clear, *args, **kargs) -> None:
     """Clears specified list/dict"""
     if list_to_clear == "option":
         tage.option_list.clear()

@@ -54,7 +54,7 @@ class Tage:
             
 
     @staticmethod            
-    def scriptLoad(self, script_location:str, *args) -> None:
+    def scriptLoad(self, script_location:str, *args, **kargs) -> None:
         """Loads and cleans script file to scripts dictonary"""
         with open(self.script_folder+script_location) as f:
             script = f.readlines()
@@ -65,7 +65,7 @@ class Tage:
                 self.scripts[script_location].append(i)
         self.findLabels(script_location)
     @staticmethod
-    def scriptUnload(self, script_location, *args) -> None:
+    def scriptUnload(self, script_location, *args, **kargs) -> None:
         """Removes script from scripts dictonary"""
         try:
             self.scripts.pop(script_location)
@@ -123,15 +123,15 @@ class Tage:
         if command.strip().startswith(':'):
             return
         arguments = self.splitArguments(self.variableParser(command))
-        # Runs function from dict key
-        self.command_map[arguments[0]](self, *arguments[1:])                  #Runs function from command map
+        self.command_map[arguments[''][0]](self, *arguments[''][1:], **arguments)
 
-    def splitArguments(self, command: str) -> list[str]:
+    def splitArguments(self, command: str) -> dict:
         """Splits command into list of arguments"""
         output = []
+        kargs = {"test":""}
         # If no quotation marks split using space char
         if command.count("\"") == 0:
-            return command.strip().split(" ")
+            return {'':command.strip().split(" ")} | kargs
 
         # Throw error if an odd number of quotation marks are in the command
         elif command.count("\"") % 2 == 1:
@@ -146,12 +146,10 @@ class Tage:
                 output += string_split[i].strip().replace("&quote&","\"").split(" ")
             else:
                 output.append(string_split[i].replace("&quote&", "\""))
-
-        # Removes empty strings
         for i in output:
             if i.strip() == "":
                 output.remove(i)
-        return output
+        return {'':output} | kargs
 
     def variableParser(self, command: str) -> str:
         """Inserts variables into commands"""
@@ -175,7 +173,6 @@ class Tage:
 
     def variableOperation(self, command: str, *args) -> str:
         """Takes a string input and performs basic mathmatical operations if it only contains numbers and operators"""
-        # List of mathmatical operators
         operator_list = "+-*/^"
         pre_split_string = command.replace(",", "").replace(" ", "")
 
@@ -183,7 +180,6 @@ class Tage:
             if i != "-":
                 pre_split_string = pre_split_string.replace(i, f",{i},")
             else:
-                # Replace minus with an addition and set next number negative
                 pre_split_string = pre_split_string.replace(i, ",+,-")
         tokens = pre_split_string.split(",")
 
@@ -217,7 +213,6 @@ class Tage:
         if op not in operator_list:
             raise TageInvalidOperator
 
-        # Numeric and string comparisons
         if "!" in op:
             if value1 != value2:
                 return True
@@ -225,7 +220,6 @@ class Tage:
             if value1 == value2:
                 return True
 
-        # Numeric comparisons
         if self.isDigit(value1) and self.isDigit(value2):
             if "<" in op:
                 if value1 < value2:

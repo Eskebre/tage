@@ -3,7 +3,7 @@ def load(tage):
 
 name = "write"
 
-def writeToFile(tage,file_name,data,write_mode="a", *args):
+def writeToFile(tage,file_name,data,write_mode="a", *args, **kargs):
         """Writes a line of data to a file, supports changeing write mode"""
         with open(tage.data_folder+file_name,write_mode) as f:
             f.write(data)

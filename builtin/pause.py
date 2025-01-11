@@ -3,7 +3,7 @@ def load(tage):
 
 name = "pause"
 
-def pause(*args):
+def pause(*args, **kargs):
     """Waits for user to return"""
     input()
 

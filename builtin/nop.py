@@ -3,7 +3,7 @@ def load(tage):
 
 name = "nop"
 
-def nop(tage, *args) -> None:
+def nop(tage, *args, **kargs) -> None:
         """No operation"""
         return
 

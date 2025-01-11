@@ -5,7 +5,7 @@ def load(tage):
 
 name = "wait"
 
-def wait(tage, time, *args) -> None:
+def wait(tage, time, *args, **kargs) -> None:
         """Waits the specified time in miliseconds"""
         sleep(int(time)/1000)
 

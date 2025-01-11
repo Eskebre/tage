@@ -1,12 +1,13 @@
+from tage.api import api
+
 def load(tage):
     return True
 
 name = "option"
 
-def option(tage, selector: str, *args) -> None:
+def option(tage, selector: str, *args, **kargs) -> None:
     """Adds the selector and command to options list"""
-    #The string concatination stuff is to encase each argument with quation marks for later
-    tage.option_list[selector] = '"' + '" "'.join(args) + '"'
+    api.set_option(tage, selector, *args)
 
 def get_command():
     return {name: option}
