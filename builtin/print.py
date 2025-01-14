@@ -4,8 +4,11 @@ def load(tage):
 
 name = "print"
 
-def printMessage(tage, message: str, delay: int = 0, new_line=1, *args, **kargs) -> None:
+def printMessage(tage, message: str, *args, **kargs) -> None:
     """Wrapper for the print function, Delay specifies the amount of time between each character being printed"""
+    delay = int(kargs.get("delay", 0))
+    new_line = kargs.get("n", False)
+    
     escape_code_chars = "\003\x1b[;0123456789:]"  # List of esacape code chars to ignore for delay print
     # This basically makes escape codes works
     message = message.encode("utf_8", 'ignore').decode('unicode_escape')

@@ -2,32 +2,32 @@
 print "You walk into the employee room" &text_speed& 0
 #Only show this text on first enter
 if &room_2_enter& = 0 print " and you immendiently see a large vault door" &text_speed& 0
-print "." &text_speed& 1
+print "." -n --delay &text_speed& 
 set room_2_enter 1
 
 :option
 wait 1000
 set turns &turns&+1
-print "\n" 0 0
-print "inspect ) Inspect the room" 0 1
-print "door ) Go back to enterance room" 0 1
-if &room_2_inspect& = 1 print "keypad ) Enter keypad code" 0 1
-print "Select an option:" 0 0
-print "\n" 0 0
+print "\n" 
+print "inspect ) Inspect the room" -n
+print "door ) Go back to enterance room" -n
+if &room_2_inspect& = 1 print "keypad ) Enter keypad code" -n
+print "Select an option:" 
+print "\n" 
 clear option
 option inspect call inspect
 option door call door
 option keypad call keypad
-option * print "Please enter a valid option" 0 1
+option * print "Please enter a valid option" -n
 choice
 goto option
 
 
 :inspect
 print "There are 2 yellow squares on the vault door" &text_speed&  1
-print "&yellow_sqaure& &yellow_sqaure&" &text_speed& 1
-print "You find a keypad next to the door, above it are the colors in the order of &blue_sqaure& &red_sqaure& &yellow_sqaure& &purple_sqaure&" &text_speed& 1
-print "Blue|Red|Yellow|Purple" &text_speed& 0 1
+print "&yellow_sqaure& &yellow_sqaure&" -n --delay &text_speed& 
+print "You find a keypad next to the door, above it are the colors in the order of &blue_sqaure& &red_sqaure& &yellow_sqaure& &purple_sqaure&" -n --delay &text_speed& 
+print "Blue|Red|Yellow|Purple" &text_speed& -n
 set room_2_inspect 1
 return
 
@@ -37,11 +37,11 @@ open room_1.tage goto enter
 :repeat_keypad
 set turns &turns&+1
 :keypad
-print "You go to enter a code in the keypad (4 digit code)" &text_speed& 1
+print "You go to enter a code in the keypad (4 digit code)" -n --delay &text_speed& 
 input user_code
 #The 'a' is added to prevent an empty string
 if "&user_code&a" = 4253a goto win
-print "Code incorrect. Try again? (y/N) " 0 0
+print "Code incorrect. Try again? (y/N) " 
 set leave 1
 clear option
 option y goto repeat_keypad
@@ -51,20 +51,20 @@ return
 
 
 :win
-print "The vault door opens" &text_speed& 1
+print "The vault door opens" -n --delay &text_speed& 
 wait 250
-print "You walk into the vault to only find a note on the ground" &text_speed& 1
-print "&"&What sane person would leave anything valuable inside an abandoned building&"&" &text_speed& 1
+print "You walk into the vault to only find a note on the ground" -n --delay &text_speed& 
+print "&"&What sane person would leave anything valuable inside an abandoned building&"&" -n --delay &text_speed& 
 
 #You win text, this 'easy to read' print statement just goes through a few colors for to make it a bit fancy
-print "&color&9mY&color&10mo&color&11mu &color&12mw&color&13mi&color&14mn&reset_color&" &text_speed& 1
-print "It took you &turns& turns to complete the game" &text_speed& 1
+print "&color&9mY&color&10mo&color&11mu &color&12mw&color&13mi&color&14mn&reset_color&" -n --delay &text_speed& 
+print "It took you &turns& turns to complete the game" -n --delay &text_speed& 
 
 #Save score to file
 write score.txt "It took &name& &turns& turns to win\n"
-print "The amount of turns it took is save in data/score.txt" &text_speed& 1
+print "The amount of turns it took is save in data/score.txt" -n --delay &text_speed& 
 :play_again
-print "Play again? (y/n) " 0 0
+print "Play again? (y/n) " 
 clear option
 option y open init.tage goto start
 option n nop

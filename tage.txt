@@ -1,5 +1,12 @@
+Keyword arguments are prefixed with a dash ( - )
+Using a single dash with set the keyword to true
+Prefixing with two dashes allows you to set the value of the keyword
+
+
 # delay allows the message to be printed over time
-print <message> [delay] [newline]
+print <message>
+-n: newline
+--delay <miliseconds>: 
 
 # waits that amount of time before moving to next line
 wait <time>
@@ -11,7 +18,8 @@ pause
 # If * is used in option it will always run if no other options are selected, needs to be at the bottom.
 clear option
 option <option> <command>
-choice [case sensistive]
+choice
+-c: Case sensistive
 
 input <var name>
 

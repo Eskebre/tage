@@ -5,9 +5,10 @@ def load(tage):
 
 name = "choice"
 
-def choice(tage, case_sensitive=0, *args, **kargs) -> None:
+def choice(tage, *args, **kargs) -> None:
     """Allows user input to select an option and run the coresponding command.
        If require option is 1 it will repeat user input until a correct option is selected"""
+    case_sensitive = kargs.get("c", 0)
     while True:
         user_input = input().strip()
         options = api.get_options(tage)

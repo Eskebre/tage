@@ -1,37 +1,37 @@
 #On first run
 :first
-print "You've heard rumors of an old abandoned office building in the middle of nowhere with a vault which containts&color&11m untold riches&reset_color&." &text_speed& 1
-print "You decide to investiage the building to find these&color&11m treasures&reset_color&." &text_speed& 1
+print "You've heard rumors of an old abandoned office building in the middle of nowhere with a vault which containts&color&11m untold riches&reset_color&." -n --delay &text_speed&
+print "You decide to investiage the building to find these&color&11m treasures&reset_color&." -n --delay &text_speed&
 
 
 :enter
-print "You are now standing on the outside of the building." &text_speed& 1
+print "You are now standing on the outside of the building." -n --delay &text_speed&
 :option
 #The wait command improves readability and helps to seperated the text, There is probably a better way to achive the same effect but this works
 wait 1000
 set turns &turns&+1
-print "\n" 0 0
-print "inspect ) Inspect the outside of the building" 0 1
-print "inside ) Go inside the building" 0 1
-if &rock& = 1 print "rock ) Look under the rock" 0 1
-if &leave& = 1 print "leave ) Give up looking for the treasure" 0 1
-print "Select an option:" 0 0
-print "\n" 0 0
+print "\n"
+print "inspect ) Inspect the outside of the building" -n
+print "inside ) Go inside the building" -n
+if &rock& = 1 print "rock ) Look under the rock" -n
+if &leave& = 1 print "leave ) Give up looking for the treasure" -n
+print "Select an option:"
+print "\n"
 clear option
 option inspect call inspect
 option inside call inside
 option rock call rock
 option leave call leave
-option * print "Please enter a valid option" 0 1
+option * print "Please enter a valid option" -n
 choice
 goto option
 
 
 :inspect
 print "\n" 0 0
-print "You look at the building and notice a set of colors of the building wall." &text_speed& 1
-print "&red_sqaure& &red_sqaure& &purple_sqaure& &purple_sqaure& &purple_sqaure& &yellow_sqaure& &yellow_sqaure&" &text_speed& 1
-print "2 red, 3 purple and 2 yellow squares." &text_speed& 1
+print "You look at the building and notice a set of colors of the building wall." -n --delay &text_speed& 
+print "&red_sqaure& &red_sqaure& &purple_sqaure& &purple_sqaure& &purple_sqaure& &yellow_sqaure& &yellow_sqaure&" -n --delay &text_speed& 
+print "2 red, 3 purple and 2 yellow squares." -n --delay &text_speed& 
 return
 
 :inside
@@ -40,16 +40,16 @@ return
 
 :rock
 if &key& = 1 goto rock_no_key
-print "You look under the rock and find a key" &text_speed& 1
+print "You look under the rock and find a key" -n --delay &text_speed& 
 set key 1
 return
 
 :rock_no_key
-print "You look under the rock to find there is not key since you already took the key" &text_speed& 1
+print "You look under the rock to find there is not key since you already took the key" -n --delay &text_speed& 
 return
 
 # Hidden ending
 :leave
-print "You decided that you didn't need the treasure and left after &turns&" 0 1
+print "You decided that you didn't need the treasure and left after &turns&" -n
 write score.txt "&name& decided to leave after &turns& turns\n"
 open room_2.tage goto play_again
