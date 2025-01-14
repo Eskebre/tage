@@ -7,7 +7,7 @@ name = "print"
 def printMessage(tage, message: str, *args, **kargs) -> None:
     """Wrapper for the print function, Delay specifies the amount of time between each character being printed"""
     delay = int(kargs.get("delay", 0))
-    new_line = kargs.get("n", False)
+    new_line = not kargs.get("n", False)
     
     escape_code_chars = "\003\x1b[;0123456789:]"  # List of esacape code chars to ignore for delay print
     # This basically makes escape codes works

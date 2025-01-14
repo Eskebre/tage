@@ -1,35 +1,35 @@
 :enter
-print "You enter the building and find yourself in an reception room" -n --delay &text_speed& 
+print "You enter the building and find yourself in an reception room" --delay &text_speed& 
 
 :option
 wait 1000
 set turns &turns&+1
-print "\n" 
-print "inspect ) Inspect the room" -n
-print "outside ) Go outside" -n
-if &room_1_inspect& = 1 print "note ) Read the note on the desk" -n
-if &room_1_inspect& = 1 print "door ) Open the door to employee room" -n
+print "" 
+print "inspect ) Inspect the room"
+print "outside ) Go outside"
+if &room_1_inspect& = 1 print "note ) Read the note on the desk"
+if &room_1_inspect& = 1 print "door ) Open the door to employee room"
 print "Select an option:" 
-print "\n" 
+print "" 
 clear option
 option inspect call inspect
 option outside call outside
 option note call note
 option door call door
-option * print "Please enter a valid option" -n
+option * print "Please enter a valid option"
 choice
 goto option
 
 
 :inspect
-print "In the room you can see a door leading to employee room and a note on the desk" -n --delay &text_speed& 
+print "In the room you can see a door leading to employee room and a note on the desk" --delay &text_speed& 
 set room_1_inspect 1
 return
 
 
 :door
 if &key& = 1 goto open_door
-print "You try and open the door but it seems its locked and requires a key" -n --delay &text_speed& 
+print "You try and open the door but it seems its locked and requires a key" --delay &text_speed& 
 return
 
 
@@ -39,10 +39,10 @@ return
 
 
 :note
-print "You read the note" -n --delay &text_speed& 
-print "&"&The key to the employee room door is under a rock outside incase someone forgets the key again&"&" -n --delay &text_speed& 
-print "&blue_sqaure& &blue_sqaure& &blue_sqaure& &blue_sqaure& &yellow_sqaure&" -n --delay &text_speed& 
-print "4 Blue and 1 yellow squares" -n --delay &text_speed& 
+print "You read the note" --delay &text_speed& 
+print "&"&The key to the employee room door is under a rock outside incase someone forgets the key again&"&" --delay &text_speed& 
+print "&blue_sqaure& &blue_sqaure& &blue_sqaure& &blue_sqaure& &yellow_sqaure&" --delay &text_speed& 
+print "4 Blue and 1 yellow squares" --delay &text_speed& 
 set rock 1
 return
 

@@ -1,0 +1,13 @@
+array.split.char data "Hello world"
+print "&data&"
+print "&data[0]&"
+print "Hello world"
+
+array.iterate.create data i
+
+:loop
+if &i.is_complete& = 1 goto end_loop
+print "&i&"
+array.iterate i
+goto loop
+:end_loop

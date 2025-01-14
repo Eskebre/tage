@@ -21,6 +21,7 @@ class Tage:
         }
         self.option_list = {}
         self.pointer = 0
+        self.skip_pointer = False
         self.current_script_pointer = 0
         self.script_pointer = ""
         self.current_script_pointer = ""
@@ -89,29 +90,30 @@ class Tage:
         # Stores the current pointer location to prevent issues when going across files
         self.current_pointer = self.pointer
         self.current_script_pointer = self.script_pointer
-        try:
+        # try:
             # Gets the command from the script to be executed
-            self.executeCommand(
+        self.executeCommand(
                 self.scripts[self.script_pointer][self.pointer])
-        # Exception handling
-        except TageOpenString:
-            print(
-                f"\nERROR: Unclosed string in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'")
-            return False
-        except TageOpenVariable:
-            print(
-                f"\nERROR: Unclosed variable in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'")
-            return False
-        except ValueError as e:
-            print(
-                f"\nERROR: Value error in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'\n{e}")
-            return False
-        except Exception as e:
-            print(
-                f"\nERROR: Error in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'\n{e}")
-            return False
-
-        self.pointer += 1
+        #Exception handling
+        # except TageOpenString:
+        #     print(
+        #         f"\nERROR: Unclosed string in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'")
+        #     return False
+        # except TageOpenVariable:
+        #     print(
+        #         f"\nERROR: Unclosed variable in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'")
+        #     return False
+        # except ValueError as e:
+        #     print(
+        #         f"\nERROR: Value error in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'\n{e}")
+        #     return False
+        # except Exception as e:
+        #     print(
+        #         f"\nERROR: Error in {self.script_pointer} on line {self.pointer+1}: '{self.scripts[self.script_pointer][self.pointer].strip()}'\n{e}")
+        #     return False
+        if not self.skip_pointer:
+            self.pointer += 1
+        self.skip_pointer = False
         # If pointer has reached the end of the file
         if len(self.scripts[self.script_pointer]) <= self.pointer:
             return False
@@ -204,6 +206,7 @@ class Tage:
     def variableOperation(self, command: str, *args) -> str:
         """Takes a string input and performs basic mathmatical operations if it only contains numbers and operators"""
         operator_list = "+-*/^"
+        command = str(command)
         pre_split_string = command.replace(",", "").replace(" ", "")
 
         for i in operator_list:

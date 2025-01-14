@@ -1,6 +1,6 @@
 print "Choose an option"
-print "1 ) Play Game" -n
-print "2 ) Exit" -n
+print "1 ) Play Game"
+print "2 ) Exit"
 clear option
 option 1 goto play
 option 2 goto end

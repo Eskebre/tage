@@ -7,9 +7,10 @@ except:
     pass
 
 tage = Tage()
+script = "init.tage"
 
-tage.scriptLoad(tage, "init.tage")
-tage.executeCommand(f'open init.tage')
+tage.scriptLoad(tage, script)
+tage.executeCommand(f'open {script}')
 
 while tage.step():
     #print(tage.stack)

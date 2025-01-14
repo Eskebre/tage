@@ -19,12 +19,14 @@ class api:
 
     @staticmethod
     def open_script(tage, location):
+        tage.skip_pointer = True
         tage.pointer = 0
         tage.script_pointer = location
 
     @staticmethod
     def goto_label(tage, label):
         """Sets pointer to label position"""
+        tage.skip_pointer = True
         tage.pointer = tage.labels[tage.script_pointer][label.lower().strip()]
 
     @staticmethod
@@ -37,10 +39,16 @@ class api:
         tage.option_list[selector] = '"' + '" "'.join(args) + '"'
     
     @staticmethod
-    def set_variable(tage, name, value, try_opperation=True):
+    def set_variable(tage, name, value, try_operation=True):
         """Puts the variable into the variables dict"""
-        if try_opperation:
-            value = tage.variableOperation("".join(value))
+        #value = value
+        try:
+            value = "".join(value)
+        except TypeError:
+            value = str(value)
+
+        if try_operation:
+            value = tage.variableOperation(value)
         tage.variables[name] = value
 
     @staticmethod
