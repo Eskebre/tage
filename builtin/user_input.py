@@ -7,7 +7,7 @@ name = "input"
 
 def user_input(tage, name, *args, **kargs) -> None:
         """Gets user input and puts it into a variable"""
-        api.set_variable(name, input().replace("\"", "&quote&").strip())
+        api.set_variable(tage, name, input().replace("\"", "&quote&").strip())
 
 def get_command():
     return {name: user_input}

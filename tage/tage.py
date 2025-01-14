@@ -26,7 +26,6 @@ class Tage:
         self.current_script_pointer = ""
         self.stack = []  # Stores previous file and pointer location when using call and can be returned to by using 'return'
         self.script_folder = "scripts/"
-        self.assets_folder = "assets/"
         self.data_folder = "data/"
         self.command_map = {  # Maps commands to functions
             "load": self.scriptLoad,
@@ -122,34 +121,65 @@ class Tage:
         """Gets the arguments and run the function specified within the command"""
         if command.strip().startswith(':'):
             return
-        arguments = self.splitArguments(self.variableParser(command))
-        self.command_map[arguments[''][0]](self, *arguments[''][1:], **arguments)
+        arguments, kargs = self.splitArguments(self.variableParser(command))
+        self.command_map[arguments[0]](self, *arguments[1:], **kargs)
 
-    def splitArguments(self, command: str) -> dict:
-        """Splits command into list of arguments"""
+    def splitArguments(self, command:str):
+        """Returns list of positional arguments and a dictionary of keyword arguments"""
         output = []
-        kargs = {"test":""}
-        # If no quotation marks split using space char
-        if command.count("\"") == 0:
-            return {'':command.strip().split(" ")} | kargs
+        kargs = {}
+        string_builder = ""
+        keyword_builder = ""
+        in_string = False
+        in_dash = False
+        double_dash = False
+        ignore = False
+        last_char = ''
 
-        # Throw error if an odd number of quotation marks are in the command
-        elif command.count("\"") % 2 == 1:
-            raise TageOpenString
+        for i in command.strip()+" ":
+            if ignore:
+                if i not in ' -\"':
+                    string_builder += '\\'
+                string_builder += i
+                ignore = False
 
-        # Splits string from quotation marks then splits on space outside of quotation marks
-        # Its expected that every other item in the list is a string
-        # Adds in addition quotes aswell from not a string
-        string_split: list[str] = command.split("\"")
-        for i in range(len(string_split)):
-            if i % 2 == 0:
-                output += string_split[i].strip().replace("&quote&","\"").split(" ")
+            elif i == '\\':
+                ignore = True
+            elif i == '"' and not in_string:
+                in_string = True
+            elif i =='"' and in_string:
+                in_string = False
+            elif in_string:
+                string_builder += i
+            #Keyword argument stuff
+            elif i == '-' and last_char == ' ' and not in_dash:
+                keyword_builder = ""
+                in_dash = True
+            elif i == '-' and last_char == '-' and not double_dash and in_dash:
+                double_dash = True
+
+            elif i == ' ':
+                if in_dash:
+                    if not double_dash:
+                        kargs[keyword_builder] = True
+                    in_dash = False
+                elif double_dash:
+                    kargs[keyword_builder] = string_builder
+                    double_dash = False
+                else:
+                    output.append(string_builder)
+                string_builder = ""
+
+            elif in_dash:
+                keyword_builder += i
             else:
-                output.append(string_split[i].replace("&quote&", "\""))
-        for i in output:
-            if i.strip() == "":
-                output.remove(i)
-        return {'':output} | kargs
+                string_builder += i
+            last_char = i
+        return output, {'': command} | kargs
+
+
+
+    
 
     def variableParser(self, command: str) -> str:
         """Inserts variables into commands"""
