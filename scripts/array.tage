@@ -1,4 +1,4 @@
-array.split.char data "Hello world"
+array.split data "Hello world"
 print "&data&"
 print "&data[0]&"
 print "Hello world"

@@ -1,0 +1,88 @@
+set char "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890@#$*.,- \/'();*[]%abcdefghijklmnopqrstuvwxyz"
+set code "UDFM55 H22DGF FDH76D FGS576 JUK5JH ERG55S T5H5FD RG645G RG5F4D RT57F6 VCBC4B F8G0GF FD5CJS G443FG F65GC2 TH6DF5 CV4F7R XF67TS X98DGT TH84SJ BCX7DF FG75SD 4KL55D GFH3F4 GH76GF 45T6FG D4G23D GB56FG SF45GF P4FF12 F6DFG1 56FG4G USGFDG FKHFDG IFGJH6 87H8G7 G25GHF 45FGFH 75FG45 54GDH5 HG56FG DF56H4 F5JHFH SGF4HF 45GH45 56H45G 69H45G 42H05G 99H54G HSBN0L 56G9MB USGFGD FKHYDK D4G23E UDFM45 H21DGF FDH56D FGS546 JUK4JH ERG54S T5H4FD RG641G RG4F4D RT56F6 VCBC3B F8G9GF FD4CJS G423FG F45GC2 TH5DF5 CV4F6R XF64TS X78DGT TH74SJ BCX6DF FG65SD 4KL45D GFH3F2 GH56GF 45T1FG"
+
+array.split_char char "&char&"
+array.split code "&code&"
+
+print "&char& &code&"
+:welcome
+
+print "\n"
+print "             WELCOME TO CRYPTO!\n"
+print "   Crypto is a tool that allows you to make"
+print "   secret messages to send to your friends."
+print "    Only people who also have Crypto will"
+print "           be able to read them!"
+
+
+:mainmenu
+print " ________________________________"
+print "^| CRYPTO: TAGE Edition  ^|"
+print "^|================================^|"
+print "^|        Select an option:       ^|"
+print "^|--------------------------------^|"
+print "^| 1) Encrypt (I need a code)     ^|"
+print "^| 2) Decrypt (I have a code)     ^|"
+print "^|                                ^|"
+print "^| 9) Exit                        ^|"
+print "^|________________________________^|"
+print ""
+clear option
+option 1 call encrypt
+option 2 call decrypt
+option 9 goto end
+option * nop
+choice
+goto mainmenu
+
+
+:encrypt
+input user_in
+array.split_char input_split "&user_in&"
+array.iterate.create input_split i
+set output "" -m
+:e_loop
+    if &i.is_complete& == 1 goto end_e_loop
+
+    array.iterate.create char j
+    :e_loop_sub
+        if &j.is_complete& == 1 goto end_e_loop_sub
+        if "&i&" == "&j&" call enc_add
+        array.iterate j
+
+        goto e_loop_sub
+    :end_e_loop_sub
+    
+
+    array.iterate i
+
+    goto e_loop
+:end_e_loop
+print "Loop ended on iteration &i.iteration&"
+call reverse
+print "&output&"
+return
+
+:enc_add
+array.get code &j.iteration& x
+set output "&output&&x&" -m
+return
+
+
+:decrypt
+
+return
+
+
+:reverse
+array.split_char rev_char "&output&"
+array.iterate.create rev_char r
+set output "" -m
+:r_loop
+    if &r.is_complete& == 1 return
+    set output "&r&&output&" -m
+    array.iterate r
+goto r_loop
+return
+
+:end

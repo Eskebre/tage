@@ -6,7 +6,8 @@ def load(tage):
 name = "set"
 
 def setVariable(tage, name, *args, **kargs):
-    api.set_variable(tage, name, args)
+    math = not kargs.get("m", False)
+    api.set_variable(tage, name, args, math)
     
 def get_command():
     return {name: setVariable}
