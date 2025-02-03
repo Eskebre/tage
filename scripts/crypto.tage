@@ -4,7 +4,6 @@ set code "UDFM55 H22DGF FDH76D FGS576 JUK5JH ERG55S T5H5FD RG645G RG5F4D RT57F6 
 array.split_char char "&char&"
 array.split code "&code&"
 
-print "&char& &code&"
 :welcome
 
 print "\n"
@@ -13,11 +12,12 @@ print "   Crypto is a tool that allows you to make"
 print "   secret messages to send to your friends."
 print "    Only people who also have Crypto will"
 print "           be able to read them!"
+input na
 
 
 :mainmenu
 print " ________________________________"
-print "^| CRYPTO: TAGE Edition  ^|"
+print "^| CRYPTO: TAGE Edition           ^|"
 print "^|================================^|"
 print "^|        Select an option:       ^|"
 print "^|--------------------------------^|"
@@ -60,7 +60,10 @@ set output "" -m
 :end_e_loop
 print "Loop ended on iteration &i.iteration&"
 call reverse
+print "Your secret is:"
 print "&output&"
+print "Press enter to return to menu"
+input na
 return
 
 :enc_add
@@ -68,11 +71,56 @@ array.get code &j.iteration& x
 set output "&output&&x&" -m
 return
 
-
-:decrypt
-
+:dec_add
+array.get char &j.iteration& x
+set output "&output&&x&" -m
 return
 
+:decrypt
+input user_in
+array.split_char input_split "&user_in&"
+array.iterate.create input_split i
+set stringbuilder "" -m
+set output "" -m
+set counter 0
+:rebuild_array_loop
+    if &i.is_complete& == 1 goto end_rebuild_array_loop
+    if &counter& == 6 call d_split
+    set stringbuilder "&i&&stringbuilder&" -m
+    set counter &counter&+1
+    array.iterate i
+    goto rebuild_array_loop
+    
+:end_rebuild_array_loop
+array.split string_split "&stringbuilder&" "\-"
+array.iterate.create string_split i
+:d_loop
+    if &i.is_complete& == 1 goto end_d_loop
+
+    array.iterate.create code j
+    :d_loop_sub
+        if &j.is_complete& == 1 goto end_d_loop_sub
+        if "&i&" == "&j&" call dec_add
+        array.iterate j
+
+        goto d_loop_sub
+    :end_d_loop_sub
+    
+
+    array.iterate i
+
+    goto d_loop
+:end_d_loop
+print "Your message is:"
+print "&output&"
+print "Press enter to return to menu"
+input na
+return
+
+:d_split
+set counter 0
+set stringbuilder "-&stringbuilder&" -m
+return
 
 :reverse
 array.split_char rev_char "&output&"
