@@ -37,6 +37,7 @@ goto mainmenu
 
 
 :encrypt
+print "Enter your message here:"
 input user_in
 array.split_char input_split "&user_in&"
 array.iterate.create input_split i
@@ -77,6 +78,7 @@ set output "&output&&x&" -m
 return
 
 :decrypt
+print "Enter your secret here:"
 input user_in
 array.split_char input_split "&user_in&"
 array.iterate.create input_split i
