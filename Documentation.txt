@@ -1,0 +1,93 @@
+==============================
+TAGE Documentation
+==============================
+
+
+EXAMPLE <required> [optional] -flag --kw {data}
+    <> indicates required arguments. (Type)
+    [] indicates optional arguments. (Type: Default parameter)
+    -  indicates a flag argument. (Keyword = True)
+    -- indicates a keyword argument. (Keyword = Data)
+    {} indicates data for keyword argument. (Type)
+
+PRINT <message> -n --delay {num}
+    Prints a line of text on-screen. \n creates a new line.
+    <message> is the text that will be displayed, and should be inside "quotations" if it contains whitespace. (String)
+    --delay allows the message to be printed over time, with a few ms between characters. (Integer)
+    -n is flag that will disable newline. (Bool)
+
+WAIT <time>
+    Waits for a specified amount of time before continuing the script.
+    <time> is the time specified, in milliseconds. (Integer)
+
+PAUSE
+    Waits for the user to press the Enter key to continue.
+    Does not take any arguments.
+
+OPTION <option> <command>
+    Adds a command to the list of options to be run through CHOICE.
+    Set <option> to * for wildcard. Any options added after wildcard will not be processed.
+    <option> is the user-input that will process the command. (String)
+    <command> is the command to be processed if the input matches <option>. (String)
+
+CHOICE -c
+    Will get the user input and evaluate it against previously declared OPTIONs.
+    -c is a flag that will determine if the input should be case sensitive (Bool)
+
+CLEAR <list>
+    Will clear the specified list or dictionary.
+    <list> is the list that will be cleared. (Option: option, stack)
+
+INPUT <variable>
+    Will accept input from the user and store it in a variable.
+    <variable> is the aforementioned variable to be stored into. (Variable)
+
+SET <variable> <data> -m
+    Stores information within a variable.
+    To print a variable after setting it, surround the name with &ampersands&.
+    Variables are stored within the game context and cannot be accessed by other games.
+    <variable> is the aforementioned variable to be stored into. (Variable)
+    <data> is the data that will be stored. Also allows for operators to be prepended. (String/Integer)
+    -m is used to disable math operators (Bool)
+
+
+IF <value1> <operator> <value2> <command>
+    Compaires two values based on an operator and, if True, will execute a command.
+    <var1> is the first element to be evaluated. (String)
+    <operator> is the method of evaluation. (Operator)
+    <var2> is the second element to be evaluated. (String)
+    <command> is the command to be run if returned True. (String)
+
+GOTO <label>
+    Will jump to a label within the script. Labels are lines prefixed with colons, i.e ":label".
+    <label> is the position that will be jumped to. (String)
+
+CALL <label>
+    Will jump to a label in the script, and saves the location in the stack to be RETURNed to.
+    <label> is the position that will be jumped to. (String)
+
+RETURN
+    Returns to the previous location in the stack, or the last time a CALL was made.
+    Does not take any arguments.
+
+LOAD <filename>
+    Loads a script into memory. Required to access scripts.
+    <filename> is the full filename of the script within the scripts folder. (String)
+
+UNLOAD <filename>
+    Unloads a script from memory, to clear RAM or to reload again after.
+    <filename> is the full filename of the script within the scripts folder. (String)
+
+OPEN <filename> [command]
+    Opens a script and starts it from the top, unless a label is specified.
+    <filename> is the full filename of the script within the scripts folder. (String)
+    [command] will be ran under the context of the new script. (Recomended: CALL, GOTO)
+
+WRITE <filename> <data> [mode]
+    #Write is expected to be changed/removed
+    Writes text to a file.
+    <filename> is the name of the file that will be written to, inside the Data folder. (String)
+    <data> is the string to be written into the file. (String)
+    [mode] is the type of write operation that will be used. (Option: a, w) 
+        "a": The text will be inserted at the end of the file.
+        "w": The file will be emptied before the text is inserted.
